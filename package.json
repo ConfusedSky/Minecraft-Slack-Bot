@@ -1,7 +1,7 @@
 {
-  "name": "easy-peasy-bot",
+  "name": "minecraft-slack-bot",
   "version": "1.0.0",
-  "description": "The awesomest bot evar.",
+  "description": "A bot for interfacing minecraft and slack.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -9,24 +9,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DEGoodmanWilson/easy-peasy-bot-app.git"
+    "url": "git@github.com:ConfusedSky/Minecraft-Slack-Bot.git"
   },
   "keywords": [
     "slack",
+    "minecraft",
     "bot"
   ],
-  "author": "D.E. Goodman-Wilson",
+  "author": "Masa Maeda",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/DEGoodmanWilson/easy-peasy-bot-app/issues"
-  },
-  "homepage": "https://github.com/DEGoodmanWilson/easy-peasy-bot-app#readme",
   "engines": {
     "node": "5.1.1"
   },
   "dependencies": {
     "botkit": "0.2.2",
     "botkit-storage-mongo": "^1.0.2",
-    "mongodb": "^1.4.39"
+    "mongodb": "^1.4.39",
+    "rcon": "^1.0.3"
   }
 }
