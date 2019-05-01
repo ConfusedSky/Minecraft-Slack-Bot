@@ -1,6 +1,15 @@
 var Rcon = require('rcon');
 
-module.exports.conn = conn = new Rcon('localhost', 25575, 'minecraft', {challenge: false});
+const config = {
+  host: process.env.MINECRAFT_HOST || 'localhost',
+  port: +process.env.MINECRAFT_RCON_PORT || 25575,
+  password: process.env.MINECRAFT_RCON_PASSWORD || 'minecraft',
+}
+console.log(config);
+
+const conn = new Rcon(config.host, config.port, config.password, {challenge: false});
+module.exports.conn = conn; 
+
 conn.on('auth', function() {
   console.log("Authed!");
 

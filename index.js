@@ -2,6 +2,7 @@
  * A Bot for Slack!
  */
 
+require("dotenv").config();
 
 /**
  * Define a function for initiating a conversation on installation
@@ -41,21 +42,21 @@ if (process.env.MONGOLAB_URI) {
 /**
  * Are being run as an app or a custom integration? The initialization will differ, depending
  */
+let controller;
 
 if (process.env.TOKEN || process.env.SLACK_TOKEN) {
     //Treat this as a custom integration
     var customIntegration = require('./lib/custom_integrations');
     var token = (process.env.TOKEN) ? process.env.TOKEN : process.env.SLACK_TOKEN;
-    var controller = customIntegration.configure(token, config, onInstallation);
+    controller = customIntegration.configure(token, config, onInstallation);
 } else if (process.env.CLIENT_ID && process.env.CLIENT_SECRET && process.env.PORT) {
     //Treat this as an app
     var app = require('./lib/apps');
-    var controller = app.configure(process.env.PORT, process.env.CLIENT_ID, process.env.CLIENT_SECRET, config, onInstallation);
+    controller = app.configure(process.env.PORT, process.env.CLIENT_ID, process.env.CLIENT_SECRET, config, onInstallation);
 } else {
     console.log('Error: If this is a custom integration, please specify TOKEN in the environment. If this is an app, please specify CLIENTID, CLIENTSECRET, and PORT in the environment');
     process.exit(1);
 }
-
 
 /**
  * A demonstration for how to handle websocket events. In this case, just log when we have and have not
@@ -90,7 +91,9 @@ const RCON = require('./RCON').conn;
 
 controller.hears('.*', 'ambient', function (bot, message) {
     getUser(bot, message).then((user) => {
-        RCON.send(`tellraw @a {"text": "<${user}> ${message.text}"}`);
+        const text = message.text.replace(/"/g, `\\"`);
+        console.log(text);
+        RCON.send(`tellraw @a {"text": "<${user}> ${text}"}`);
         // bot.reply(message, `${user}: ${message.text}`);
     })
 });
