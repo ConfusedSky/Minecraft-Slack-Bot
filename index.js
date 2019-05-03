@@ -123,13 +123,13 @@ log.on('line', function(data) {
     console.log(data);
     let bot = controller.spawn({
         incoming_webhook: {
-            url: "https://hooks.slack.com/services/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",
+            url: process.env.SLACK_HOOK,
         } 
     });
 
     bot.sendWebhook({
         text: data,
-        channel: "#minecraft-slack-bot"
+        channel: process.env.SLACK_CHANNEL
     }, function(err, res) {
         if(err) {
             console.log(err);
