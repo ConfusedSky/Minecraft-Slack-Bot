@@ -94,10 +94,48 @@ controller.hears('.*', 'ambient', function (bot, message) {
         const text = message.text.replace(/"/g, `\\"`);
         console.log(text);
         RCON.send(`tellraw @a {"text": "<${user}> ${text}"}`);
-        // bot.reply(message, `${user}: ${message.text}`);
     })
 });
 
+const tail = require("tail").Tail;
+const pathToFollow = process.env.MINECRAFT_LOG_LOCATION;
+if(!pathToFollow) {
+    console.error('Log file not specified! Please set MINECRAFT_LOG_LOCATION');
+    process.exit(1);
+}
+
+const log_options = {
+    fromBeginning: false,
+    follow: true,
+}
+
+const log = new tail(pathToFollow, log_options);
+
+log.on('line', function(data) {
+    if (!data) {
+        return;
+    } else if(data.includes("<") || data.includes("[Server]") || data.includes("joined") || data.includes("left")) {
+        data = data.split(":").slice(3).join(":").slice(1);
+    } else {
+        return;
+    }
+
+    console.log(data);
+    let bot = controller.spawn({
+        incoming_webhook: {
+            url: "https://hooks.slack.com/services/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",
+        } 
+    });
+
+    bot.sendWebhook({
+        text: data,
+        channel: "#minecraft-slack-bot"
+    }, function(err, res) {
+        if(err) {
+            console.log(err);
+        }
+    });
+});
 
 /**
  * AN example of what could be:
