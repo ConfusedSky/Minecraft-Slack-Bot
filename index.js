@@ -110,11 +110,62 @@ const log_options = {
 }
 
 const log = new tail(pathToFollow, log_options);
+const pass = [
+    "<",
+    "[Server]",
+    "joined",
+    "left",
+    "made the advancement",
+    "was shot by",
+    "was pricked",
+    "walked into a cactus",
+    "was roasted",
+    "drowned",
+    "suffocated in a wall",
+    "was squished too much",
+    "was squashed",
+    "experienced kinetic energy",
+    "removed an elytra",
+    "blew up",
+    "blown up",
+    "was killed by",
+    "hit the ground",
+    "fell off",
+    "fell from",
+    "fell out",
+    "fell into",
+    "was doomed",
+    "fell to far",
+    "was shot",
+    "was blown",
+    "was killed by magic",
+    "went up in flames",
+    "burned to death",
+    "was burnt",
+    "walked into fire",
+    "went off with",
+    "tried to swim",
+    "was struct by lightning",
+    "discovered the floor was lava",
+    "walked into danger zone",
+    "was killed by",
+    "starved to",
+    "was poked to death",
+    "was killed",
+    "was impaled",
+    "was speared",
+    "fell out",
+    "fell from",
+    "didn't want to live",
+    "withered away",
+    "was pummeled",
+    "died",
+];
 
 log.on('line', function(data) {
     if (!data) {
         return;
-    } else if(data.includes("<") || data.includes("[Server]") || data.includes("joined") || data.includes("left")) {
+    } else if(pass.some((value) => data.includes(value))) {
         data = data.split(":").slice(3).join(":").slice(1);
     } else {
         return;

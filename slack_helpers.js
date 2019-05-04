@@ -7,7 +7,9 @@ module.exports.getUser = (bot, message) => {
             }
             else {
                 var currentUser = response["user"];
-                resolve(currentUser.name);
+                resolve(currentUser.profile.display_name ||
+                    currentUser.profile.real_name || 
+                    currentUser.profile.name);
             }
         });
     });
